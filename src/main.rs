@@ -13,16 +13,17 @@ use std::io::prelude::*;
 
 
 macro_rules! unwrap_stdout {
-    ( $process:expr ; $s:expr ) => {
+    ( $process:expr ) => {
         {
+            let mut s = String::new();
             match $process.stdout.unwrap()
-                .read_to_string(&mut $s)
+                .read_to_string(&mut s)
                 {
                     Err(why) => panic!(
                         "Couldn't read stdout: {}",
                         why.description()
                     ),
-                    Ok(_) => $s
+                    Ok(_) => s
                 }
         };
     }
@@ -84,8 +85,7 @@ fn main() {
 
     let process_in = spawn_cmd!(input);
 
-    let mut input_res = String::new();
-    input_res = unwrap_stdout!(process_in; input_res);
+    let input_res = unwrap_stdout!(process_in);
 
     let process_out = spawn_cmd!(output);
 
@@ -98,8 +98,6 @@ fn main() {
             Ok(_) => print!(""),
         }
 
-    let mut output_res = String::new();
-
-    println!("{}", unwrap_stdout!(process_out; output_res).to_string());
+    println!("{}", unwrap_stdout!(process_out).to_string());
 
 }
