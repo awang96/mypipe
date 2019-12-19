@@ -82,11 +82,8 @@ fn main() {
 
     let input = get_args!("input"; matches);
     let output = get_args!("output"; matches);
-
     let process_in = spawn_cmd!(input);
-
     let input_res = unwrap_stdout!(process_in);
-
     let process_out = spawn_cmd!(output);
 
     match process_out.stdin.unwrap()
